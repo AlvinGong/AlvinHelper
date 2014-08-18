@@ -7,6 +7,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Tmall_Wine_Helper", "Tmall_
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "JD_Wine_Helper", "JD_Wine_Helper\JD_Wine_Helper.pyproj", "{1C12EA9F-5FEC-4E4F-A470-0455E27B56BD}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AlvinUtility", "AlvinUtility\AlvinUtility.pyproj", "{971A3FA6-5CE0-4AC3-AFDA-7290840E9C70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,8 @@ Global
 		{B74E1E11-E7E0-4303-8BC7-A79A76912FB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C12EA9F-5FEC-4E4F-A470-0455E27B56BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C12EA9F-5FEC-4E4F-A470-0455E27B56BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971A3FA6-5CE0-4AC3-AFDA-7290840E9C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971A3FA6-5CE0-4AC3-AFDA-7290840E9C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
