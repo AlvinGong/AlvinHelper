@@ -10,6 +10,7 @@ import csv
 import sys
 import os
 from AlvinUtility import AlvinUtility as aUtil
+import re
 
 class WineInfo():
     title = ''
@@ -18,10 +19,11 @@ class WineInfo():
     page = ''
     count_comments = ''
     activity = ''
+    capacity = ''
 
     @staticmethod
     def GetSchema():
-        return ['title','price','link','page','comments_count','activity']
+        return ['title','price','link','page','comments_count','activity', 'capacity']
 
 class JDWineHelper():
     url = r'http://list.jd.com/list.html?cat=12259%2C12260%2C9435&delivery=1&page=1&JL=4_10_0'
@@ -51,7 +53,7 @@ class JDWineHelper():
             except:
                 print('!!!Error: Exception!!!')
             ofile.close()
-             
+            #break # For debug
             if self.IsLastPage(driver):
                break
             else:
@@ -102,12 +104,15 @@ class JDWineHelper():
                 wine.title = wine.title.replace(wine.activity,'')
             except:
                 wine.activity = ''
-            #print(wine.title)
+            print(wine.title)
+            groups = re.search('\d+ml', wine.title.lower())
+            wine.capacity = groups.group(0) if not groups is None else ''
             wine.price = htmWine.find_element_by_css_selector('.p-price strong').text
             wine.link = htmWine.find_element_by_css_selector('.p-name a').get_attribute('href')
             wine.page = self.getPageNum(self.url)
             wine.count_comments = htmWine.find_element_by_css_selector('.evaluate').text
-            writer.writerow([wine.title,wine.price,wine.link,wine.page,wine.count_comments,wine.activity])
+            writer.writerow([wine.title,wine.price,wine.link,wine.page,wine.count_comments,wine.activity,wine.capacity])
 
 jdHelper = JDWineHelper()
 jdHelper.Run()
+
