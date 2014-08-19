@@ -51,7 +51,7 @@ class JDWineHelper():
             except:
                 print('!!!Error: Exception!!!')
             ofile.close()
-            break   # To be deleted, for debug purpose only 
+             
             if self.IsLastPage(driver):
                break
             else:
