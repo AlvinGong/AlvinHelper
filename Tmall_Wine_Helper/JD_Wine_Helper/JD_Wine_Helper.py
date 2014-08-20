@@ -1,4 +1,4 @@
-from selenium import webdriver
+﻿from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
@@ -20,10 +20,12 @@ class WineInfo():
     count_comments = ''
     activity = ''
     capacity = ''
+    vol = ''
+    count = ''
 
     @staticmethod
     def GetSchema():
-        return ['title','price','link','page','comments_count','activity', 'capacity']
+        return ['title','price','link','page','comments_count','activity', 'capacity', 'vol', 'count']
 
 class JDWineHelper():
     url = r'http://list.jd.com/list.html?cat=12259%2C12260%2C9435&delivery=1&page=1&JL=4_10_0'
@@ -105,13 +107,22 @@ class JDWineHelper():
             except:
                 wine.activity = ''
             print(wine.title)
-            groups = re.search('\d+ml', wine.title.lower())
-            wine.capacity = groups.group(0) if not groups is None else ''
+            caps = re.search('\d+（ml|毫升）', wine.title.lower())
+            wine.capacity = caps.group(0) if not caps is None else ''
+            uCode = '0xb6'.encode('utf8')
+            vols = re.search('\d+度', wine.title)
+            wine.vol = vols.group(0) if not vols is None else ''
+            counts = re.search('\d+瓶',wine.title)
+            wine.count = counts.group(0) if not counts is None else '1'
             wine.price = htmWine.find_element_by_css_selector('.p-price strong').text
             wine.link = htmWine.find_element_by_css_selector('.p-name a').get_attribute('href')
             wine.page = self.getPageNum(self.url)
-            wine.count_comments = htmWine.find_element_by_css_selector('.evaluate').text
-            writer.writerow([wine.title,wine.price,wine.link,wine.page,wine.count_comments,wine.activity,wine.capacity])
+            txtComment = htmWine.find_element_by_css_selector('.evaluate').text
+            comments = re.search('\d+人',txtComment)
+            wine.count_comments = comments.group(0) if not comments is None else 'NA'
+            writer.writerow([wine.title,wine.price,wine.link,\
+                wine.page,wine.count_comments,wine.activity,\
+                wine.capacity,wine.vol,wine.count])
 
 jdHelper = JDWineHelper()
 jdHelper.Run()
