@@ -22,10 +22,12 @@ class WineInfo():
     capacity = ''
     vol = ''
     count = ''
+    years = ''
 
     @staticmethod
     def GetSchema():
-        return ['title','price','link','page','comments_count','activity', 'capacity', 'vol', 'count']
+        return ['title','price','link','page','comments_count',\
+            'activity', 'capacity', 'vol', 'count', 'years']
 
 class JDWineHelper():
     url = r'http://list.jd.com/list.html?cat=12259%2C12260%2C9435&delivery=1&page=1&JL=4_10_0'
@@ -113,6 +115,8 @@ class JDWineHelper():
             vols = re.search('\d+度', wine.title)
             wine.vol = vols.group(0) if not vols is None else ''
             counts = re.search('\d+瓶',wine.title)
+            years = re.search('\d+年',wine.title)
+            wine.year = years.group(0) if not years is None else ''
             wine.count = counts.group(0) if not counts is None else '1'
             wine.price = htmWine.find_element_by_css_selector('.p-price strong').text
             wine.link = htmWine.find_element_by_css_selector('.p-name a').get_attribute('href')
@@ -122,7 +126,7 @@ class JDWineHelper():
             wine.count_comments = comments.group(0) if not comments is None else 'NA'
             writer.writerow([wine.title,wine.price,wine.link,\
                 wine.page,wine.count_comments,wine.activity,\
-                wine.capacity,wine.vol,wine.count])
+                wine.capacity,wine.vol,wine.count,wine.years])
 
 jdHelper = JDWineHelper()
 jdHelper.Run()
