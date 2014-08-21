@@ -116,8 +116,8 @@ class JDWineHelper():
             wine.vol = vols.group(0) if not vols is None else ''
             counts = re.search('\d+瓶',wine.title)
             wine.count = counts.group(0) if not counts is None else '1'
-            years = re.search('\d+年',wine.title)
-            wine.year = years.group(0) if not years is None else ''
+            years = re.search('[0-9十百一二三四五六七八九]+年',wine.title)
+            wine.years = years.group(0) if not years is None else ''
             wine.price = htmWine.find_element_by_css_selector('.p-price strong').text
             wine.link = htmWine.find_element_by_css_selector('.p-name a').get_attribute('href')
             wine.page = self.getPageNum(self.url)
