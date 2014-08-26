@@ -33,7 +33,7 @@ class JDWineHelper():
     url = r'http://list.jd.com/list.html?cat=12259%2C12260%2C9435&delivery=1&page=1&JL=4_10_0'
 
     def Run(self, url=''):
-        if url:
+        if url:       
             self.url = url
         driver = webdriver.Firefox()
         driver.get(self.url)
@@ -111,7 +111,6 @@ class JDWineHelper():
             print(wine.title)
             caps = re.search('\d+（ml|毫升）', wine.title.lower())
             wine.capacity = caps.group(0) if not caps is None else ''
-            uCode = '0xb6'.encode('utf8')
             vols = re.search('\d+度', wine.title)
             wine.vol = vols.group(0) if not vols is None else ''
             counts = re.search('\d+瓶',wine.title)
@@ -130,4 +129,3 @@ class JDWineHelper():
 
 jdHelper = JDWineHelper()
 jdHelper.Run()
-
