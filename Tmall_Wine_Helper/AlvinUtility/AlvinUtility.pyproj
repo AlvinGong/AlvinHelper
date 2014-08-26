@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>971a3fa6-5ce0-4ac3-afda-7290840e9c70</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AlvinUtility.py</StartupFile>
+    <StartupFile>WinMonitor.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,6 +23,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AlvinUtility.py" />
+    <Compile Include="WinMonitor.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
