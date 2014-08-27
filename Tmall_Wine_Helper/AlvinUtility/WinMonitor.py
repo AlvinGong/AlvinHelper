@@ -48,14 +48,16 @@ class WinMonitorClass():
         mail.select('inbox')
         typ, data = mail.search(None, 'UNSEEN')
         for num in data[0].split():
-            typ, data = mail.fetch(num, '(RFC822)')
+            #typ, data = mail.fetch(num, '(RFC822)')
+            #mail.store(num, '-FLAGS','\SEEN')
+            typ, data = mail.fetch(num, '(BODY.PEEK[HEADER])')
             mailText = data[0][1].decode('utf-8')
             message = email.message_from_string(mailText)
             subject = email.header.decode_header(message['subject'])
-            print(subject[0][0])#.decode('utf-8'))
-            fromWho = email.header.decode_header(message['from'])
-            print('From {0}'.format(fromWho[0][0])) #.decode('utf-8')
-            mail.store(num, '-FLAGS','\SEEN')
+            subjectValue = subject[0][0].decode('utf-8') if subject[0][1] == 'utf-8' else subject[0][0]
+            print(subjectValue)
+            fromWho = email.utils.parseaddr(message['from'])[1]
+            print('From {0}'.format(fromWho))
             #print('mail mssage %s\n%s\n' % (num,repr(data)))
         mail.close()
         mail.logout()
