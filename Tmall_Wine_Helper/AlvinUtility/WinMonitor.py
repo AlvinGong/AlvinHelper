@@ -1,9 +1,11 @@
-import os, subprocess
+﻿import os, subprocess
 import poplib
 import email,string
 import email.header
 import imaplib
 import sys
+import smtplib
+from email.mime.text import MIMEText
 
 class WinMonitorClass():
 
@@ -62,5 +64,34 @@ class WinMonitorClass():
         mail.close()
         mail.logout()
 
+    
+    mailHost = 'smtp.163.com'
+    mail_user = r'alvingong119'
+    mail_postfix = r'163.com'
+    mail_pwd = r'5%tgb8ik,'
+
+    def smtpSend(self, toList, sub, content):
+        me = 'Ming<{0}@{1}>'.format(self.mail_user,self.mail_postfix)
+        msg = MIMEText(content, _subtype='html',_charset='utf-8')
+        msg['Subject'] = sub
+        msg['From'] = me
+        msg['To'] = ';'.join(toList)
+        try:
+            s = smtplib.SMTP()
+            s.connect(self.mailHost)
+            s.login(self.mail_user, self.mail_pwd)
+            s.sendmail(me, toList, msg.as_string())
+            s.close()
+            return True
+        except Exception as e:
+            print(str(e))
+            return False
+
 monitor = WinMonitorClass()
-monitor.imapHelper()
+content = "This is only a test mail sent by Python. Click following link to go to <a href='http://www.baidu.com'>百度</a>"
+#monitor.imapHelper()
+mailtoList = [r'gongming119@hotmail.com', r'gongming119@outlook.com',r'xiaoxiaoluo3@126.com']
+if monitor.smtpSend(mailtoList, "Hello SMTP!", content):
+    print("Send Successfully...")
+else:
+    print("Send Mail Failed!!!")
