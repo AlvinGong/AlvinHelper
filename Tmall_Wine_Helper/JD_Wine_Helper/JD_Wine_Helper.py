@@ -10,6 +10,7 @@ import csv
 import sys
 import os
 from AlvinUtility import AlvinUtility as aUtil
+import WinMonitor as winMon
 import re
 
 class WineInfo():
@@ -211,6 +212,7 @@ class JDWineHelper():
             print(e)
         finally:
             oSummary.close()
+        return '{0}//{1}.csv'.format(self.dirName, aUtil.GetFileNameFromDate())
 
     def GetDryFruitsFromTargetPage(self, driver, writer):
         #driver = webdriver.Firefox()
@@ -249,21 +251,29 @@ class JDWineHelper():
         
 
 jdHelper = JDWineHelper()
-#jdHelper.GetWineInfo()
-#jdHelper.GetWineInfo(r'http://list.jd.com/list.html?cat=12259%2C12260%2C9438&delivery=1&page=1&JL=4_10_0', r'RedWine')
-#jdHelper.GetWineInfo(r'http://list.jd.com/list.html?cat=12259%2C12260%2C9436&delivery=1&page=1&JL=4_10_0', r'YellowWine')
+monitor = winMon.WinMonitorClass()
+jdHelper.GetWineInfo()
+filePath = jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\jd')
+monitor.smtpSendWithFile(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'jd', filePath)
+jdHelper.GetWineInfo(r'http://list.jd.com/list.html?cat=12259%2C12260%2C9438&delivery=1&page=1&JL=4_10_0', r'RedWine')
+filePath = jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\RedWine')
+monitor.smtpSendWithFile(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'RedWine', filePath)
+jdHelper.GetWineInfo(r'http://list.jd.com/list.html?cat=12259%2C12260%2C9436&delivery=1&page=1&JL=4_10_0', r'YellowWine')
+filePath = jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\YellowWine')
+monitor.smtpSendWithFile(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'YellowWine', filePath)
 jdHelper.GetDryFruitsInfo(r'http://search.jd.com/Search?keyword=%E6%9E%9C%E5%B9%B2&enc=utf-8#keyword=%E6%9E%9C%E5%B9%B2&enc=utf-8&qr=&qrst=UNEXPAND&et=&rt=1&click=&psort=&page=',r'DryFruits')
-
+filePath = jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits')
+monitor.smtpSendWithFile(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'DryFruits', filePath)
 
 #folder = r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits\2014-09-01'
 #log = r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits\DryFruits.csv'
 #for line in os.popen(r'dir /b /l C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits\2014-09-01'):
 #    filePath = folder + "\\" + line
-jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits')
 
-##jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\jd')
-##jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\RedWine')
-##jdHelper.MergeFiles(r'C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\YellowWine')
-#os.popen('shutdown -f -s -t 30')
+
+#monitor = winMon.WinMonitorClass()
+#monitor.smtpSendWithFile(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'Files', r"C:\Users\Public\Documents\ByteMe\Tmall_Wine_Helper\JD_Wine_Helper\DryFruits\2014-09-02.csv")
+#monitor.smtpSend(['gongming119@hotmail.com', 'gongming119@outlook.com'], 'Files', 'Test')
+os.popen('shutdown -f -s -t 30')
     
 
