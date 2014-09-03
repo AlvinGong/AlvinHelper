@@ -6,6 +6,9 @@ import imaplib
 import sys
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email import encoders
+from email.mime.base import MIMEBase
 
 class WinMonitorClass():
 
@@ -86,12 +89,38 @@ class WinMonitorClass():
         except Exception as e:
             print(str(e))
             return False
+    
+    def smtpSendWithFile(self, toList, sub, att):
+        msg = MIMEMultipart()
+        me = 'Ming<{0}@{1}>'.format(self.mail_user,self.mail_postfix)
+        msg['Subject'] = sub
+        msg['From'] = me
+        msg['To'] = ','.join(toList)
+        #with open(att,'rb') as fp:
+        #    content = MIMEBase('application', 'octet-stream')
+        #    content.set_payload(fp.read())
+        with open(att) as fp:
+            content = MIMEText(fp.read(), _subtype = 'octet-stream')
+        #encoders.encode_base64(content)
+        content.add_header('Content-Disposition', 'attachment', filename = att)
+        msg.attach(content)
+        composed = msg.as_string()
+        try:
+          s = smtplib.SMTP()
+          s.connect(self.mailHost)
+          s.login(self.mail_user, self.mail_pwd)
+          s.sendmail(me, toList, composed)
+          s.close()
+          return True
+        except Exception as e:
+          print(str(e))
+          return False
 
-monitor = WinMonitorClass()
-content = "This is only a test mail sent by Python. Click following link to go to <a href='http://www.baidu.com'>百度</a>"
-#monitor.imapHelper()
-mailtoList = [r'gongming119@hotmail.com', r'gongming119@outlook.com',r'xiaoxiaoluo3@126.com']
-if monitor.smtpSend(mailtoList, "Hello SMTP!", content):
-    print("Send Successfully...")
-else:
-    print("Send Mail Failed!!!")
+#monitor = WinMonitorClass()
+#content = "This is only a test mail sent by Python. Click following link to go to <a href='http://www.baidu.com'>百度</a>"
+##monitor.imapHelper()
+#mailtoList = [r'gongming119@hotmail.com', r'gongming119@outlook.com',r'xiaoxiaoluo3@126.com']
+#if monitor.smtpSend(mailtoList, "Hello SMTP!", content):
+#    print("Send Successfully...")
+#else:
+#    print("Send Mail Failed!!!")
