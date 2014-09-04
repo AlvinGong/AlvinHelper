@@ -9,6 +9,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email import encoders
 from email.mime.base import MIMEBase
+from email.header import Header
 
 class WinMonitorClass():
 
@@ -93,14 +94,14 @@ class WinMonitorClass():
     def smtpSendWithFile(self, toList, sub, att):
         msg = MIMEMultipart()
         me = 'Ming<{0}@{1}>'.format(self.mail_user,self.mail_postfix)
-        msg['Subject'] = sub
+        msg['Subject'] = Header(sub,'gb2312')
         msg['From'] = me
         msg['To'] = ','.join(toList)
         #with open(att,'rb') as fp:
         #    content = MIMEBase('application', 'octet-stream')
         #    content.set_payload(fp.read())
-        with open(att) as fp:
-            content = MIMEText(fp.read(), _subtype = 'octet-stream')
+        with open(att,'rb') as fp:
+            content = MIMEText(fp.read(), _subtype = 'plain', _charset = 'utf-8')
         #encoders.encode_base64(content)
         content.add_header('Content-Disposition', 'attachment', filename = att)
         msg.attach(content)
