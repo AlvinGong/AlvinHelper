@@ -94,7 +94,7 @@ class WinMonitorClass():
     def smtpSendWithFile(self, toList, sub, att):
         msg = MIMEMultipart()
         me = 'Ming<{0}@{1}>'.format(self.mail_user,self.mail_postfix)
-        msg['Subject'] = Header(sub,'gb2312')
+        msg['Subject'] = Header(sub,'utf-8')
         msg['From'] = me
         msg['To'] = ','.join(toList)
         #with open(att,'rb') as fp:
@@ -103,7 +103,8 @@ class WinMonitorClass():
         with open(att,'rb') as fp:
             content = MIMEText(fp.read(), _subtype = 'plain', _charset = 'utf-8')
         #encoders.encode_base64(content)
-        content.add_header('Content-Disposition', 'attachment', filename = att)
+        fileName = '{0}_{1}'.format(sub, os.path.basename(att))
+        content.add_header('Content-Disposition', 'attachment', filename = fileName)
         msg.attach(content)
         composed = msg.as_string()
         try:
